@@ -1,0 +1,33 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "bezalel"
+version = "0.1.0"
+description = "Bezalel — a self-extending reasoning engine: sandboxed primitives plus a human-gated self-extension loop."
+readme = "README.md"
+requires-python = ">=3.11"
+license = { text = "Apache-2.0" }
+keywords = ["reasoning", "agent", "self-extending", "llm", "ollama", "sandbox", "tools"]
+
+dependencies = [
+    "keturah @ git+https://github.com/gellsmore-svg/keturah.git@v0.3.0",
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=8.0", "ruff>=0.6"]
+html = ["beautifulsoup4>=4.12"]
+hoglah = ["hoglah>=0.8.0"]
+galeed = ["galeed>=0.1"]
+
+[project.scripts]
+bezalel = "bezalel.cli:main"
+
+[project.urls]
+Homepage = "https://github.com/gellsmore-svg/Bezalel"
+Repository = "https://github.com/gellsmore-svg/Bezalel"
+Issues = "https://github.com/gellsmore-svg/Bezalel/issues"
+
+[tool.setuptools.packages.find]
+where = ["src"]
