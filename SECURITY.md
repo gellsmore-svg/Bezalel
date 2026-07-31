@@ -10,7 +10,7 @@ tested.
 ## The safety model
 
 Bezalel's containment rests on one invariant (INV-1, see `README.md`): a model's
-output only becomes a *proposed Cairn step*; nothing touches the world except by
+output only becomes a *proposed Deborah step*; nothing touches the world except by
 executing a step that passed validation + `allowed_tools` + a gate, inside the
 sandbox, traced in Galeed. Every primitive carries a **blast-radius class**, and
 `execute` / `network` / `env-mutate` primitives are gated by default;

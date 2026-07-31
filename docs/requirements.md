@@ -14,16 +14,16 @@
 Bezalel is the family's **L0 substrate grown a set of world-touching hands**, plus
 a mechanism to grow more. It exposes a small set of side-effecting primitives
 (files, execution, network, models) and a self-extension loop, driven by the
-family's *existing* bounded orchestration (Cairn plans + validation + gates +
+family's *existing* bounded orchestration (Deborah plans + validation + gates +
 Galeed trace + the outcomes loop). It is **in scope** to build the hands and the
 registrar; it is **out of scope** to write a new agent loop or a new sandbox from
 scratch where the family/Codex already provide one.
 
 ## THE INVARIANT (INV-1) — inviolable
 
-> A model's output only ever becomes a **proposed Cairn step**. Nothing touches
+> A model's output only ever becomes a **proposed Deborah step**. Nothing touches
 > the filesystem, network, or package/model state except by executing a step
-> that has passed `cairn.validate_plan` + the step's `allowed_tools` constraint +
+> that has passed `deborah.validate_plan` + the step's `allowed_tools` constraint +
 > its governance gate, **inside the sandbox**, with the call **traced in Galeed**.
 
 Every requirement below is subordinate to INV-1. Any change that lets model text
@@ -146,15 +146,15 @@ flag, execute primitives are unavailable and say why. **Status:** Planned.
 
 ### FR-PLAN — Reasoning (reuse, not rebuild)
 
-#### FR-PLAN-01 Cairn-planned execution
-Bezalel **shall** drive work as a **Cairn plan** whose steps are Bezalel
+#### FR-PLAN-01 Deborah-planned execution
+Bezalel **shall** drive work as a **Deborah plan** whose steps are Bezalel
 primitives, executed by the family interpretive planner with `allowed_tools`
 restricted to Bezalel's registered tools. It **shall not** implement a bespoke
 agent loop. **Acceptance:** a goal produces a validated plan; steps naming a tool
 outside `allowed_tools` are rejected. **Status:** Planned (Phase 3).
 
 #### FR-PLAN-02 Validation gate on every step
-No step **shall** execute unless the plan passes `cairn.validate_plan` and the
+No step **shall** execute unless the plan passes `deborah.validate_plan` and the
 step's construct/tool is permitted. **Acceptance:** an invalid or
 disallowed-construct plan never reaches a primitive (INV-1). **Status:** Planned.
 
@@ -269,7 +269,7 @@ with the extra, a run's provenance is searchable via `search_memory`.
 |---|---|---|
 | **1** | Primitives 1–3, 6, 7 + workspace jail + Galeed events + Keturah manifest. **No `run`, no network.** | The substrate shape, safely, additively. |
 | **2** | `run` under bwrap/linux-sandbox + resource caps. | The autonomy gate — done deliberately. |
-| **3** | Cairn-planned reasoning; class-based gate policy; outcomes loop armed; ack semantics. | Bounded dynamic orchestration over the hands. |
+| **3** | Deborah-planned reasoning; class-based gate policy; outcomes loop armed; ack semantics. | Bounded dynamic orchestration over the hands. |
 | **4** | Self-extension loop (author → test → gate → register); no-core-mutation guard; optional Milcah review. | Capability growth, append-only + gated. |
 | **5** | `browse` (allowlisted); `pip_install` / `ollama_pull` (pinned, gated). | Reaching outside — behind hard gates. |
 

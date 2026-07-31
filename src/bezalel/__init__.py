@@ -2,13 +2,13 @@
 
 A local-first *maker*: a small set of side-effecting primitives (files,
 execution, network, models) plus a self-extension loop, driven by the family's
-bounded orchestration (Cairn plans + validation + gates + Galeed trace).
+bounded orchestration (Deborah plans + validation + gates + Galeed trace).
 
 Phase 1 (this release) ships only the **deterministic substrate floor**: the
 workspace jail and the safe primitives (write/read/edit/parse). Nothing here
 executes a command, opens a socket, or calls a model — those arrive behind the
 sandbox (Phase 2) and the gate policy (Phase 3). See ``docs/requirements.md``
-(REQ-BEZALEL-001) and the family invariant INV-1: *models propose Cairn steps;
+(REQ-BEZALEL-001) and the family invariant INV-1: *models propose Deborah steps;
 the substrate disposes.*
 """
 

@@ -8,16 +8,16 @@ and a **human-gated self-extension loop** that lets it author, test, and
 register *new* capabilities for itself and the family. It is a *maker*, not a
 general coding agent (that is Codex + the family surround).
 
-Its reasoning is not a bespoke agent loop: work runs as a **Cairn plan** that
+Its reasoning is not a bespoke agent loop: work runs as a **Deborah plan** that
 the family's interpretive planner validates and gates before any primitive
 touches the world, with every step traced to **Galeed** and browsable in
 **Mizpah**.
 
 ## The invariant (INV-1)
 
-> A model's output only ever becomes a **proposed Cairn step**. Nothing touches
+> A model's output only ever becomes a **proposed Deborah step**. Nothing touches
 > the filesystem, network, or package/model state except by executing a step
-> that passed `cairn.validate_plan` + its `allowed_tools` constraint + its
+> that passed `deborah.validate_plan` + its `allowed_tools` constraint + its
 > governance gate, **inside the sandbox**, **traced in Galeed**.
 
 Everything below is subordinate to that line: *models propose, the substrate
@@ -59,5 +59,5 @@ pytest -q
 
 Bezalel federates through **Keturah** (`build_manifest()`), calls models
 through **Hoglah**, traces to **Galeed**, and is reasoned by **Tirzah**'s
-planner over **Cairn** plans. It is one specialist — the *builder* — in the
+planner over **Deborah** plans. It is one specialist — the *builder* — in the
 family's distributed intelligence.

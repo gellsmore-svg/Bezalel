@@ -24,7 +24,7 @@ README — everything is subordinate to *models propose, the substrate disposes*
 1. **Phase 2 — `run` under a sandbox.** Reuse Codex's `bwrap`/`linux-sandbox`
    (already on the dev box); workspace bind-mount only, network off, resource
    caps; `FR-SANDBOX-02/04`. This is the autonomy gate — do it deliberately.
-2. **Phase 3 — Cairn-planned reasoning.** Wire Tirzah's planner with
+2. **Phase 3 — Deborah-planned reasoning.** Wire Tirzah's planner with
    `allowed_tools` = Bezalel primitives; class-based gate policy keyed off the
    manifest; arm the outcomes loop by default; ack semantics (FR-PLAN, FR-GATE).
 3. **Phase 4 — self-extension.** author → test-in-sandbox → human gate →
@@ -37,4 +37,4 @@ README — everything is subordinate to *models propose, the substrate disposes*
 - Model tiers are injectable and validated against a closed vocabulary; never
   auto-act on a model alone.
 - `pip install -e ".[dev]"`; `ruff check src tests`; `pytest -q`. CI matrix 3.11/3.12.
-- Federates via Keturah; models via Hoglah; traces to Galeed; reasoned by Tirzah/Cairn.
+- Federates via Keturah; models via Hoglah; traces to Galeed; reasoned by Tirzah/Deborah.
