@@ -3,7 +3,7 @@ requires = ["setuptools>=68"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "bezalel"
+name = "bezalel-engine"
 version = "0.1.0"
 description = "Bezalel — a self-extending reasoning engine: sandboxed primitives plus a human-gated self-extension loop."
 readme = "README.md"
@@ -12,7 +12,9 @@ license = { text = "Apache-2.0" }
 keywords = ["reasoning", "agent", "self-extending", "llm", "ollama", "sandbox", "tools"]
 
 dependencies = [
-    "keturah @ git+https://github.com/gellsmore-svg/keturah.git@v0.3.0",
+    # Index pin (git URLs are rejected by PyPI). Do not publish this
+    # distribution as ``bezalel`` — that name is taken on PyPI.
+    "keturah>=0.4.0",
 ]
 
 [project.optional-dependencies]
