@@ -2,8 +2,11 @@
 
 from __future__ import annotations
 
+import os
+
 import pytest
 
+from bezalel.primitives import write_file
 from bezalel.workspace import Workspace, WorkspaceError
 
 
@@ -29,6 +32,32 @@ def test_symlink_escape_rejected(tmp_path):
     ws = Workspace(root)
     with pytest.raises(WorkspaceError):
         ws.resolve_write("link/loot.txt")
+
+
+def test_dangling_symlink_write_rejected(tmp_path):
+    root = tmp_path / "root"
+    outside = tmp_path / "outside"
+    root.mkdir()
+    outside.mkdir()
+    target = outside / "loot.txt"
+    (root / "link").symlink_to(target)
+    ws = Workspace(root)
+    with pytest.raises(WorkspaceError):
+        write_file(ws, "link", "pwned")
+    assert not target.exists()
+
+
+def test_hardlink_write_rejected(tmp_path):
+    root = tmp_path / "root"
+    root.mkdir()
+    outside = tmp_path / "outside.txt"
+    outside.write_text("keep", encoding="utf-8")
+    inside = root / "alias.txt"
+    os.link(outside, inside)
+    ws = Workspace(root)
+    with pytest.raises(WorkspaceError):
+        write_file(ws, "alias.txt", "changed")
+    assert outside.read_text(encoding="utf-8") == "keep"
 
 
 def test_read_allowlist(tmp_path):

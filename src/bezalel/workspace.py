@@ -67,11 +67,31 @@ class Workspace:
 
     # -- public --------------------------------------------------------------
 
+    def _reject_write_alias(self, resolved: Path) -> None:
+        """Reject symlinks (including dangling) and hard links on the write path.
+
+        ``exists()`` is false for a dangling symlink, so the lexical jail check
+        can still see that name as inside the root. ``write_text`` would follow
+        it. A hard link shares an inode that may also live outside the root.
+        """
+        try:
+            rel = resolved.relative_to(self.root)
+        except ValueError:
+            return
+        current = self.root
+        for part in rel.parts:
+            current = current / part
+            if current.is_symlink():
+                raise WorkspaceError(f"symlink is not a writable path: {resolved}")
+            if current.is_file() and current.lstat().st_nlink > 1:
+                raise WorkspaceError(f"hard link is not a writable path: {resolved}")
+
     def resolve_write(self, path: str | os.PathLike[str]) -> Path:
         """Return the absolute path for a write, or raise if it escapes root."""
         resolved = self._resolve_symlink_safe(Path(path))
         if not self._within(resolved, self.root):
             raise WorkspaceError(f"path escapes workspace root: {path!r}")
+        self._reject_write_alias(resolved)
         return resolved
 
     def resolve_read(self, path: str | os.PathLike[str]) -> Path:

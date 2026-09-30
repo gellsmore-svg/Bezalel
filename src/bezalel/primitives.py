@@ -11,10 +11,12 @@ touches the world except through a validated, gated, sandboxed step.
 
 from __future__ import annotations
 
+import os
 import re
+import stat
 
 from bezalel import trace
-from bezalel.workspace import Workspace
+from bezalel.workspace import Workspace, WorkspaceError
 
 # blast-radius class per primitive, the safety model's backbone (FR-PRIM).
 BLAST_RADIUS = {
@@ -25,11 +27,30 @@ BLAST_RADIUS = {
 }
 
 
+def _write_text_nofollow(target: os.PathLike[str], content: str) -> None:
+    """Create or replace a regular file without following a symlink."""
+    flags = os.O_WRONLY | os.O_CREAT
+    if hasattr(os, "O_NOFOLLOW"):
+        flags |= os.O_NOFOLLOW
+    try:
+        fd = os.open(target, flags, 0o644)
+    except OSError as exc:
+        raise WorkspaceError(f"refusing to follow a link: {target}") from exc
+    try:
+        info = os.fstat(fd)
+        if not stat.S_ISREG(info.st_mode) or info.st_nlink > 1:
+            raise WorkspaceError(f"refusing to write through a link: {target}")
+        os.ftruncate(fd, 0)
+        os.write(fd, content.encode("utf-8"))
+    finally:
+        os.close(fd)
+
+
 def write_file(ws: Workspace, path: str, content: str) -> str:
     """Write ``content`` to ``path`` inside the workspace root (FR-PRIM-01)."""
     target = ws.resolve_write(path)
     target.parent.mkdir(parents=True, exist_ok=True)
-    target.write_text(content, encoding="utf-8")
+    _write_text_nofollow(target, content)
     trace.emit("bezalel.write_file", summary=str(path), bytes=len(content))
     return str(target)
 
@@ -55,7 +76,7 @@ def edit_file(ws: Workspace, path: str, old: str, new: str) -> str:
         raise ValueError(f"old string not found in {path!r}")
     if count > 1:
         raise ValueError(f"old string is not unique in {path!r} ({count} matches)")
-    target.write_text(content.replace(old, new), encoding="utf-8")
+    _write_text_nofollow(target, content.replace(old, new))
     trace.emit("bezalel.edit_file", summary=str(path))
     return str(target)
 
